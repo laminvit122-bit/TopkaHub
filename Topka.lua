@@ -145,7 +145,7 @@ local closeBtn = Instance.new("TextButton")
 closeBtn.Size = UDim2.new(0, 30, 0, 30)
 closeBtn.Position = UDim2.new(0.9, 0, 0, 7)
 closeBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 50)
-closeBtn.Text = "✕"
+closeBtn.Text = ""
 closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeBtn.TextSize = 16
 closeBtn.Font = Enum.Font.GothamBold
@@ -154,6 +154,14 @@ closeBtn.Parent = topBar
 local closeCorner = Instance.new("UICorner")
 closeCorner.CornerRadius = UDim.new(0, 8)
 closeCorner.Parent = closeBtn
+
+local closeIcon = Instance.new("ImageLabel")
+closeIcon.Size = UDim2.new(0, 20, 0, 20)
+closeIcon.Position = UDim2.new(0.5, -10, 0.5, -10)
+closeIcon.BackgroundTransparency = 1
+closeIcon.Image = "rbxassetid://751603345"
+closeIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+closeIcon.Parent = closeBtn
 
 closeBtn.MouseButton1Click:Connect(function() playClick() screenGui:Destroy() end)
 
@@ -742,15 +750,12 @@ dropdownText.TextXAlignment = Enum.TextXAlignment.Left
 dropdownText.ZIndex = 6
 dropdownText.Parent = dropdownFrame
 
-local dropdownArrow = Instance.new("TextLabel")
-dropdownArrow.Size = UDim2.new(0, 40, 1, 0)
-dropdownArrow.Position = UDim2.new(1, -45, 0, 0)
+local dropdownArrow = Instance.new("ImageLabel")
+dropdownArrow.Size = UDim2.new(0, 22, 0, 22)
+dropdownArrow.Position = UDim2.new(1, -34, 0.5, -11)
 dropdownArrow.BackgroundTransparency = 1
-dropdownArrow.Text = "⌃\n⌄"
-dropdownArrow.TextColor3 = Color3.fromRGB(255, 200, 100)
-dropdownArrow.TextSize = 14
-dropdownArrow.Font = Enum.Font.GothamBold
-dropdownArrow.TextYAlignment = Enum.TextYAlignment.Center
+dropdownArrow.Image = "rbxassetid://72901043489977"
+dropdownArrow.ImageColor3 = Color3.fromRGB(255, 255, 255)
 dropdownArrow.ZIndex = 6
 dropdownArrow.Parent = dropdownFrame
 
