@@ -12,7 +12,7 @@ local LocalPlayer = Players.LocalPlayer
 local isMinimized = false
 local mainFrame = nil
 local savedPosition = nil
-local currentTab = "Teleports"
+local currentTab = "Main"
 local language = "en"
 local speedHackEnabled = false
 local jumpPowerEnabled = false
@@ -35,7 +35,7 @@ end
 
 local lang = {
     en = {
-        title = "Topka Hub", teleports = "TELEPORTS", player = "PLAYER", settings = "SETTINGS",
+        title = "Topka Hub", main = "MAIN", teleports = "TELEPORTS", player = "PLAYER", settings = "SETTINGS",
         language = "Language", english = "English", russian = "Russian", sound = "Sound",
         soundOn = "Sound ON 🔊", soundOff = "Sound OFF 🔇", speedHack = "Speed Hack", jumpPower = "Jump Power",
         speed = "Speed", jump = "Jump", speedOn = "Speed Hack ON ✅", speedOff = "Speed Hack OFF",
@@ -45,7 +45,7 @@ local lang = {
         paintball = "Paintball Shop", blackMarket = "Black Market", credit = "script by DevScripts",
     },
     ru = {
-        title = "Topka Hub", teleports = "ТЕЛЕПОРТЫ", player = "ИГРОК", settings = "НАСТРОЙКИ",
+        title = "Topka Hub", main = "ГЛАВНАЯ", teleports = "ТЕЛЕПОРТЫ", player = "ИГРОК", settings = "НАСТРОЙКИ",
         language = "Язык", english = "Английский", russian = "Русский", sound = "Звук",
         soundOn = "Звук ВКЛ 🔊", soundOff = "Звук ВЫКЛ 🔇", speedHack = "Спид Хак", jumpPower = "Сила Прыжка",
         speed = "Скорость", jump = "Прыжок", speedOn = "Speed Hack ON ✅", speedOff = "Speed Hack OFF",
@@ -80,6 +80,7 @@ mainFrame.BackgroundColor3 = Color3.fromRGB(15, 5, 30)
 mainFrame.BackgroundTransparency = 0.05
 mainFrame.BorderSizePixel = 2
 mainFrame.BorderColor3 = Color3.fromRGB(180, 80, 255)
+mainFrame.Active = true
 mainFrame.Parent = screenGui
 
 local mainCorner = Instance.new("UICorner")
@@ -95,8 +96,8 @@ gradient.Color = ColorSequence.new({
 gradient.Rotation = 45
 gradient.Parent = mainFrame
 
--- ============ TOP BAR (теперь перетаскивается за ВСЮ шапку) ============
-local topBar = Instance.new("TextButton") -- TextButton чтобы ловить клики везде
+-- TOP BAR
+local topBar = Instance.new("TextButton")
 topBar.Size = UDim2.new(1, 0, 0, 45)
 topBar.Position = UDim2.new(0, 0, 0, 0)
 topBar.BackgroundColor3 = Color3.fromRGB(35, 10, 60)
@@ -104,6 +105,7 @@ topBar.BackgroundTransparency = 0.1
 topBar.BorderSizePixel = 0
 topBar.Text = ""
 topBar.AutoButtonColor = false
+topBar.Active = true
 topBar.Parent = mainFrame
 
 local topCorner = Instance.new("UICorner")
@@ -199,7 +201,7 @@ end
 minimizeBtn.MouseButton1Click:Connect(function() playClick() minimizeGUI() end)
 expandBtn.MouseButton1Click:Connect(function() playClick() expandGUI() end)
 
--- ============ DRAG: тащим за ЛЮБОЕ МЕСТО шапки ============
+-- DRAG
 local dragging = false
 local dragStart = nil
 local startPos = nil
@@ -207,7 +209,6 @@ local startPos = nil
 topBar.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.Touch 
        or input.UserInputType == Enum.UserInputType.MouseButton1 then
-        -- не тащим если нажали кнопки минимизации/закрытия
         local mousePos = UserInputService:GetMouseLocation()
         local btnPos = minimizeBtn.AbsolutePosition
         local btnPos2 = closeBtn.AbsolutePosition
@@ -242,8 +243,8 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
--- ============ TABS (убрана Weapon) ============
-local tabNames = {"Teleports", "Player", "Settings"}
+-- TABS
+local tabNames = {"Main", "Player", "Teleports", "Settings"}
 local tabButtons = {}
 local tabContents = {}
 
@@ -255,6 +256,7 @@ tabPanel.BackgroundTransparency = 0.3
 tabPanel.BorderSizePixel = 0
 tabPanel.ScrollBarThickness = 3
 tabPanel.CanvasSize = UDim2.new(0, #tabNames * 100, 0, 0)
+tabPanel.Active = true
 tabPanel.Parent = mainFrame
 
 local tabLayout = Instance.new("UIListLayout")
@@ -265,12 +267,12 @@ tabLayout.Parent = tabPanel
 
 for _, name in ipairs(tabNames) do
     local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(0, 98, 1, 0)
+    btn.Size = UDim2.new(0, 73, 1, 0)
     btn.BackgroundColor3 = Color3.fromRGB(50, 20, 80)
     btn.BackgroundTransparency = 0.5
     btn.Text = name
     btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    btn.TextSize = 13
+    btn.TextSize = 11
     btn.Font = Enum.Font.GothamBold
     btn.Parent = tabPanel
     local corner = Instance.new("UICorner")
@@ -299,10 +301,10 @@ for _, name in ipairs(tabNames) do
     container.BackgroundTransparency = 1
     container.ScrollBarThickness = 8
     container.ScrollBarImageColor3 = Color3.fromRGB(200, 150, 255)
-    container.CanvasSize = UDim2.new(0, 0, 0, 1000) -- увеличен скролл
+    container.CanvasSize = UDim2.new(0, 0, 0, 1000)
     container.ScrollingDirection = Enum.ScrollingDirection.Y
     container.Active = true
-    container.Visible = (name == "Teleports")
+    container.Visible = (name == "Main")
     container.Parent = contentFrame
     tabContents[name] = container
 end
@@ -331,11 +333,31 @@ print("Topka Hub - Часть 1 загружена! Вставьте Часть 
 -- Topka Hub
 -- ЧАСТЬ 2
 
--- ============ TELEPORTS ============
+-- MAIN (пока пустая)
+local mainWelcome = Instance.new("TextLabel")
+mainWelcome.Size = UDim2.new(1, 0, 0, 40)
+mainWelcome.Position = UDim2.new(0, 0, 0, 40)
+mainWelcome.BackgroundTransparency = 1
+mainWelcome.Text = "Topka Hub"
+mainWelcome.TextColor3 = Color3.fromRGB(200, 80, 255)
+mainWelcome.TextSize = 26
+mainWelcome.Font = Enum.Font.GothamBold
+mainWelcome.Parent = tabContents["Main"]
+
+local mainSub = Instance.new("TextLabel")
+mainSub.Size = UDim2.new(1, 0, 0, 30)
+mainSub.Position = UDim2.new(0, 0, 0, 80)
+mainSub.BackgroundTransparency = 1
+mainSub.Text = "script by DevScripts"
+mainSub.TextColor3 = Color3.fromRGB(150, 100, 200)
+mainSub.TextSize = 14
+mainSub.Font = Enum.Font.GothamBold
+mainSub.Parent = tabContents["Main"]
+
+-- TELEPORTS
 createBtn(t("bank"), 40, tabContents["Teleports"], function() 
     local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     if root then root.CFrame = CFrame.new(Coords.Bank) end
-    game.StarterGui:SetCore("SendNotification", {Title = "Teleport", Text = "📍 " .. t("bank"), Duration = 1})
 end)
 createBtn(t("bankRings"), 90, tabContents["Teleports"], function() 
     local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
@@ -374,7 +396,7 @@ createBtn(t("blackMarket"), 490, tabContents["Teleports"], function()
     if root then root.CFrame = CFrame.new(Coords.BlackMarket) end
 end)
 
--- ============ PLAYER: SPEED ============
+-- PLAYER: SPEED
 local speedHackBtn = createBtn(t("speedHack"), 40, tabContents["Player"], nil)
 
 local speedStatus = Instance.new("TextButton")
@@ -507,7 +529,7 @@ speedPlus.MouseButton1Click:Connect(function()
     end
 end)
 
--- ============ PLAYER: JUMP ============
+-- PLAYER: JUMP
 local jumpBtn = createBtn(t("jumpPower"), 220, tabContents["Player"], nil)
 
 local jumpStatus = Instance.new("TextButton")
@@ -650,9 +672,12 @@ print("Topka Hub - Часть 2 загружена! Вставьте Часть 
 -- Topka Hub
 -- ЧАСТЬ 3
 
--- ============ SETTINGS ============
 local settingsContainer = tabContents["Settings"]
 
+local COLOR_ACTIVE = Color3.fromRGB(0, 150, 0)
+local COLOR_INACTIVE = Color3.fromRGB(0, 0, 0)
+
+-- ЯЗЫК
 local langLabel = Instance.new("TextLabel")
 langLabel.Size = UDim2.new(1, 0, 0, 30)
 langLabel.Position = UDim2.new(0, 0, 0, 40)
@@ -666,6 +691,173 @@ langLabel.Parent = settingsContainer
 local langEnBtn = createBtn(t("english"), 75, settingsContainer, nil)
 local langRuBtn = createBtn(t("russian"), 130, settingsContainer, nil)
 
+langEnBtn.BackgroundColor3 = COLOR_ACTIVE
+langRuBtn.BackgroundColor3 = COLOR_INACTIVE
+
+-- ЗВУК ОБЩИЙ
+local soundLabel = Instance.new("TextLabel")
+soundLabel.Size = UDim2.new(1, 0, 0, 30)
+soundLabel.Position = UDim2.new(0, 0, 0, 185)
+soundLabel.BackgroundTransparency = 1
+soundLabel.Text = t("sound") .. ":"
+soundLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+soundLabel.TextSize = 17
+soundLabel.Font = Enum.Font.GothamBold
+soundLabel.Parent = settingsContainer
+
+local soundBtn = createBtn(t("soundOn"), 220, settingsContainer, nil)
+soundBtn.BackgroundColor3 = COLOR_ACTIVE
+
+soundBtn.MouseButton1Click:Connect(function()
+    soundEnabled = not soundEnabled
+    if soundEnabled then
+        soundBtn.Text = t("soundOn")
+        soundBtn.BackgroundColor3 = COLOR_ACTIVE
+        clickSound:Play()
+    else
+        soundBtn.Text = t("soundOff")
+        soundBtn.BackgroundColor3 = COLOR_INACTIVE
+    end
+end)
+
+-- ВЫБОР ЗВУКА КЛИКА
+local soundChoiceLabel = Instance.new("TextLabel")
+soundChoiceLabel.Size = UDim2.new(1, 0, 0, 30)
+soundChoiceLabel.Position = UDim2.new(0, 0, 0, 275)
+soundChoiceLabel.BackgroundTransparency = 1
+soundChoiceLabel.Text = "Click Sound:"
+soundChoiceLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+soundChoiceLabel.TextSize = 17
+soundChoiceLabel.Font = Enum.Font.GothamBold
+soundChoiceLabel.Parent = settingsContainer
+
+local dropdownFrame = Instance.new("Frame")
+dropdownFrame.Size = UDim2.new(0, 260, 0, 45)
+dropdownFrame.Position = UDim2.new(0.5, -130, 0, 310)
+dropdownFrame.BackgroundColor3 = Color3.fromRGB(30, 15, 55)
+dropdownFrame.BackgroundTransparency = 0.2
+dropdownFrame.BorderSizePixel = 0
+dropdownFrame.ZIndex = 5
+dropdownFrame.Parent = settingsContainer
+local ddCorner = Instance.new("UICorner")
+ddCorner.CornerRadius = UDim.new(0, 10)
+ddCorner.Parent = dropdownFrame
+
+local dropdownBtn = Instance.new("TextButton")
+dropdownBtn.Size = UDim2.new(1, 0, 1, 0)
+dropdownBtn.BackgroundTransparency = 1
+dropdownBtn.Text = ""
+dropdownBtn.ZIndex = 6
+dropdownBtn.Parent = dropdownFrame
+
+local dropdownText = Instance.new("TextLabel")
+dropdownText.Size = UDim2.new(1, -50, 1, 0)
+dropdownText.Position = UDim2.new(0, 12, 0, 0)
+dropdownText.BackgroundTransparency = 1
+dropdownText.Text = "Variant 1"
+dropdownText.TextColor3 = Color3.fromRGB(255, 255, 255)
+dropdownText.TextSize = 16
+dropdownText.Font = Enum.Font.GothamBold
+dropdownText.TextXAlignment = Enum.TextXAlignment.Left
+dropdownText.ZIndex = 6
+dropdownText.Parent = dropdownFrame
+
+local dropdownArrow = Instance.new("TextLabel")
+dropdownArrow.Size = UDim2.new(0, 40, 1, 0)
+dropdownArrow.Position = UDim2.new(1, -45, 0, 0)
+dropdownArrow.BackgroundTransparency = 1
+dropdownArrow.Text = "⌃\n⌄"
+dropdownArrow.TextColor3 = Color3.fromRGB(255, 200, 100)
+dropdownArrow.TextSize = 14
+dropdownArrow.Font = Enum.Font.GothamBold
+dropdownArrow.TextYAlignment = Enum.TextYAlignment.Center
+dropdownArrow.ZIndex = 6
+dropdownArrow.Parent = dropdownFrame
+
+local dropdownList = Instance.new("Frame")
+dropdownList.Size = UDim2.new(0, 260, 0, 0)
+dropdownList.Position = UDim2.new(0.5, -130, 0, 358)
+dropdownList.BackgroundColor3 = Color3.fromRGB(30, 15, 55)
+dropdownList.BackgroundTransparency = 0.05
+dropdownList.BorderSizePixel = 0
+dropdownList.ClipsDescendants = true
+dropdownList.Visible = false
+dropdownList.ZIndex = 10
+dropdownList.Parent = settingsContainer
+local dlCorner = Instance.new("UICorner")
+dlCorner.CornerRadius = UDim.new(0, 10)
+dlCorner.Parent = dropdownList
+
+local dropdownOpen = false
+local optionButtons = {}
+
+local soundOptions = {
+    {name = "No Sound", id = nil},
+    {name = "Variant 1", id = "rbxassetid://101572333845544"},
+    {name = "ID: 132078503796732", id = "rbxassetid://132078503796732"},
+}
+
+local currentSoundOption = 2
+
+local function applySoundOption(index)
+    currentSoundOption = index
+    local opt = soundOptions[index]
+    dropdownText.Text = opt.name
+    if opt.id then
+        clickSound.SoundId = opt.id
+    end
+    clickSound.Volume = 0.5
+end
+
+for i, opt in ipairs(soundOptions) do
+    local optBtn = Instance.new("TextButton")
+    optBtn.Size = UDim2.new(1, -10, 0, 42)
+    optBtn.Position = UDim2.new(0, 5, 0, 5 + (i - 1) * 45)
+    optBtn.BackgroundColor3 = Color3.fromRGB(50, 25, 80)
+    optBtn.Text = opt.name
+    optBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    optBtn.TextSize = 15
+    optBtn.Font = Enum.Font.GothamBold
+    optBtn.ZIndex = 11
+    optBtn.Parent = dropdownList
+    local obCorner = Instance.new("UICorner")
+    obCorner.CornerRadius = UDim.new(0, 8)
+    obCorner.Parent = optBtn
+    optionButtons[i] = optBtn
+    
+    optBtn.MouseButton1Click:Connect(function()
+        applySoundOption(i)
+        TweenService:Create(dropdownList, TweenInfo.new(0.25), {
+            Size = UDim2.new(0, 260, 0, 0)
+        }):Play()
+        task.wait(0.25)
+        dropdownList.Visible = false
+        dropdownOpen = false
+        if soundEnabled then clickSound:Play() end
+    end)
+end
+
+dropdownBtn.MouseButton1Click:Connect(function()
+    dropdownOpen = not dropdownOpen
+    if dropdownOpen then
+        dropdownList.Visible = true
+        TweenService:Create(dropdownList, TweenInfo.new(0.25), {
+            Size = UDim2.new(0, 260, 0, 5 + #soundOptions * 45)
+        }):Play()
+    else
+        TweenService:Create(dropdownList, TweenInfo.new(0.25), {
+            Size = UDim2.new(0, 260, 0, 0)
+        }):Play()
+        task.wait(0.25)
+        dropdownList.Visible = false
+    end
+    if soundEnabled then clickSound:Play() end
+end)
+
+-- CREDIT
+local creditBtn = createBtn(t("credit"), 380, settingsContainer, nil)
+
+-- ОБНОВЛЕНИЕ ЯЗЫКА
 local function updateLanguage()
     title.Text = t("title")
     langLabel.Text = t("language") .. ":"
@@ -677,6 +869,11 @@ local function updateLanguage()
     jumpBtn.Text = jumpPowerEnabled and t("jumpOn") or t("jumpPower")
     speedLabel.Text = t("speed") .. ":"
     jumpLabel.Text = t("jump") .. ":"
+    
+    tabButtons["Main"].Text = t("main")
+    tabButtons["Player"].Text = t("player")
+    tabButtons["Teleports"].Text = t("teleports")
+    tabButtons["Settings"].Text = t("settings")
     
     local teleportBtns = {}
     for _, child in ipairs(tabContents["Teleports"]:GetChildren()) do
@@ -695,47 +892,20 @@ end
 langEnBtn.MouseButton1Click:Connect(function()
     playClick()
     language = "en"
-    langEnBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-    langRuBtn.BackgroundColor3 = Color3.fromRGB(50, 20, 80)
+    langEnBtn.BackgroundColor3 = COLOR_ACTIVE
+    langRuBtn.BackgroundColor3 = COLOR_INACTIVE
     updateLanguage()
 end)
 
 langRuBtn.MouseButton1Click:Connect(function()
     playClick()
     language = "ru"
-    langRuBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-    langEnBtn.BackgroundColor3 = Color3.fromRGB(50, 20, 80)
+    langRuBtn.BackgroundColor3 = COLOR_ACTIVE
+    langEnBtn.BackgroundColor3 = COLOR_INACTIVE
     updateLanguage()
 end)
 
-local soundLabel = Instance.new("TextLabel")
-soundLabel.Size = UDim2.new(1, 0, 0, 30)
-soundLabel.Position = UDim2.new(0, 0, 0, 185)
-soundLabel.BackgroundTransparency = 1
-soundLabel.Text = t("sound") .. ":"
-soundLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-soundLabel.TextSize = 17
-soundLabel.Font = Enum.Font.GothamBold
-soundLabel.Parent = settingsContainer
-
-local soundBtn = createBtn(t("soundOn"), 220, settingsContainer, nil)
-soundBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-
-soundBtn.MouseButton1Click:Connect(function()
-    soundEnabled = not soundEnabled
-    if soundEnabled then
-        soundBtn.Text = t("soundOn")
-        soundBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-        clickSound:Play()
-    else
-        soundBtn.Text = t("soundOff")
-        soundBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 50)
-    end
-end)
-
-local creditBtn = createBtn(t("credit"), 275, settingsContainer, nil)
-
--- ============ SWITCH TAB ============
+-- SWITCH TAB
 local function switchTab(tabName)
     currentTab = tabName
     for name, container in pairs(tabContents) do
@@ -756,6 +926,8 @@ for name, btn in pairs(tabButtons) do
     btn.MouseButton1Click:Connect(function() playClick() switchTab(name) end)
 end
 
-switchTab("Teleports")
+switchTab("Main")
+
+applySoundOption(2)
 
 print("✅ Topka Hub - Полностью загружен!")
