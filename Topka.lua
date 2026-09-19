@@ -28,7 +28,7 @@ clickSound.Volume = 0.5
 clickSound.Parent = game:GetService("SoundService")
 
 local function playClick()
-    if soundEnabled and clickSound then
+    if soundEnabled and clickSound and clickSound.SoundId ~= "" then
         clickSound:Play()
     end
 end
@@ -36,23 +36,27 @@ end
 local lang = {
     en = {
         title = "Topka Hub", main = "MAIN", teleports = "TELEPORTS", player = "PLAYER", settings = "SETTINGS",
-        language = "Language", english = "English", russian = "Russian", sound = "Sound",
-        soundOn = "Sound ON 🔊", soundOff = "Sound OFF 🔇", speedHack = "Speed Hack", jumpPower = "Jump Power",
+        language = "Language", english = "English", russian = "Russian",
+        speedHack = "Speed Hack", jumpPower = "Jump Power",
         speed = "Speed", jump = "Jump", speedOn = "Speed Hack ON ✅", speedOff = "Speed Hack OFF",
         jumpOn = "Jump Power ON ✅", jumpOff = "Jump Power OFF",
         bank = "Bank", bankRings = "Bank (Rings)", armory1 = "Armory 1", armory2 = "Armory 2", armory3 = "Armory 3",
         militaryBase = "Military Base (Street)", militaryBunker = "Military Base (Bunker)", police = "Police Station",
-        paintball = "Paintball Shop", blackMarket = "Black Market", credit = "script by DevScripts",
+        paintball = "Paintball Shop", blackMarket = "Black Market",
+        clickSound = "Click Sound",
+        footer = "tg: https://t.me/devscripts0",
     },
     ru = {
         title = "Topka Hub", main = "ГЛАВНАЯ", teleports = "ТЕЛЕПОРТЫ", player = "ИГРОК", settings = "НАСТРОЙКИ",
-        language = "Язык", english = "Английский", russian = "Русский", sound = "Звук",
-        soundOn = "Звук ВКЛ 🔊", soundOff = "Звук ВЫКЛ 🔇", speedHack = "Спид Хак", jumpPower = "Сила Прыжка",
+        language = "Язык", english = "Английский", russian = "Русский",
+        speedHack = "Спид Хак", jumpPower = "Сила Прыжка",
         speed = "Скорость", jump = "Прыжок", speedOn = "Speed Hack ON ✅", speedOff = "Speed Hack OFF",
         jumpOn = "Jump Power ON ✅", jumpOff = "Jump Power OFF",
         bank = "Банк", bankRings = "Банк (кольца)", armory1 = "Оружейная 1", armory2 = "Оружейная 2", armory3 = "Оружейная 3",
         militaryBase = "Военная база (улица)", militaryBunker = "Военная база (бункер)", police = "Полицейский участок",
-        paintball = "Магазин пейнтбола", blackMarket = "Чёрный рынок", credit = "script by DevScripts",
+        paintball = "Магазин пейнтбола", blackMarket = "Чёрный рынок",
+        clickSound = "Звук клика",
+        footer = "тг: https://t.me/devscripts0",
     }
 }
 
@@ -201,7 +205,7 @@ end
 minimizeBtn.MouseButton1Click:Connect(function() playClick() minimizeGUI() end)
 expandBtn.MouseButton1Click:Connect(function() playClick() expandGUI() end)
 
--- DRAG
+-- DRAG (за всю шапку)
 local dragging = false
 local dragStart = nil
 local startPos = nil
@@ -282,7 +286,7 @@ for _, name in ipairs(tabNames) do
 end
 
 local contentFrame = Instance.new("ScrollingFrame")
-contentFrame.Size = UDim2.new(1, 0, 1, -98)
+contentFrame.Size = UDim2.new(1, 0, 1, -125)
 contentFrame.Position = UDim2.new(0, 0, 0, 96)
 contentFrame.BackgroundTransparency = 1
 contentFrame.ScrollBarThickness = 10
@@ -309,6 +313,18 @@ for _, name in ipairs(tabNames) do
     tabContents[name] = container
 end
 
+-- FOOTER
+local footer = Instance.new("TextLabel")
+footer.Size = UDim2.new(1, 0, 0, 22)
+footer.Position = UDim2.new(0, 0, 1, -25)
+footer.BackgroundTransparency = 1
+footer.Text = t("footer")
+footer.TextColor3 = Color3.fromRGB(150, 100, 200)
+footer.TextSize = 12
+footer.Font = Enum.Font.GothamBold
+footer.ZIndex = 50
+footer.Parent = mainFrame
+
 local function createBtn(text, yPos, parent, callback)
     local btn = Instance.new("TextButton")
     btn.Size = UDim2.new(0, 260, 0, 45)
@@ -333,7 +349,7 @@ print("Topka Hub - Часть 1 загружена! Вставьте Часть 
 -- Topka Hub
 -- ЧАСТЬ 2
 
--- MAIN (пока пустая)
+-- MAIN (пустая заготовка)
 local mainWelcome = Instance.new("TextLabel")
 mainWelcome.Size = UDim2.new(1, 0, 0, 40)
 mainWelcome.Position = UDim2.new(0, 0, 0, 40)
@@ -343,16 +359,6 @@ mainWelcome.TextColor3 = Color3.fromRGB(200, 80, 255)
 mainWelcome.TextSize = 26
 mainWelcome.Font = Enum.Font.GothamBold
 mainWelcome.Parent = tabContents["Main"]
-
-local mainSub = Instance.new("TextLabel")
-mainSub.Size = UDim2.new(1, 0, 0, 30)
-mainSub.Position = UDim2.new(0, 0, 0, 80)
-mainSub.BackgroundTransparency = 1
-mainSub.Text = "script by DevScripts"
-mainSub.TextColor3 = Color3.fromRGB(150, 100, 200)
-mainSub.TextSize = 14
-mainSub.Font = Enum.Font.GothamBold
-mainSub.Parent = tabContents["Main"]
 
 -- TELEPORTS
 createBtn(t("bank"), 40, tabContents["Teleports"], function() 
@@ -694,38 +700,12 @@ local langRuBtn = createBtn(t("russian"), 130, settingsContainer, nil)
 langEnBtn.BackgroundColor3 = COLOR_ACTIVE
 langRuBtn.BackgroundColor3 = COLOR_INACTIVE
 
--- ЗВУК ОБЩИЙ
-local soundLabel = Instance.new("TextLabel")
-soundLabel.Size = UDim2.new(1, 0, 0, 30)
-soundLabel.Position = UDim2.new(0, 0, 0, 185)
-soundLabel.BackgroundTransparency = 1
-soundLabel.Text = t("sound") .. ":"
-soundLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-soundLabel.TextSize = 17
-soundLabel.Font = Enum.Font.GothamBold
-soundLabel.Parent = settingsContainer
-
-local soundBtn = createBtn(t("soundOn"), 220, settingsContainer, nil)
-soundBtn.BackgroundColor3 = COLOR_ACTIVE
-
-soundBtn.MouseButton1Click:Connect(function()
-    soundEnabled = not soundEnabled
-    if soundEnabled then
-        soundBtn.Text = t("soundOn")
-        soundBtn.BackgroundColor3 = COLOR_ACTIVE
-        clickSound:Play()
-    else
-        soundBtn.Text = t("soundOff")
-        soundBtn.BackgroundColor3 = COLOR_INACTIVE
-    end
-end)
-
 -- ВЫБОР ЗВУКА КЛИКА
 local soundChoiceLabel = Instance.new("TextLabel")
 soundChoiceLabel.Size = UDim2.new(1, 0, 0, 30)
-soundChoiceLabel.Position = UDim2.new(0, 0, 0, 275)
+soundChoiceLabel.Position = UDim2.new(0, 0, 0, 195)
 soundChoiceLabel.BackgroundTransparency = 1
-soundChoiceLabel.Text = "Click Sound:"
+soundChoiceLabel.Text = t("clickSound") .. ":"
 soundChoiceLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 soundChoiceLabel.TextSize = 17
 soundChoiceLabel.Font = Enum.Font.GothamBold
@@ -733,7 +713,7 @@ soundChoiceLabel.Parent = settingsContainer
 
 local dropdownFrame = Instance.new("Frame")
 dropdownFrame.Size = UDim2.new(0, 260, 0, 45)
-dropdownFrame.Position = UDim2.new(0.5, -130, 0, 310)
+dropdownFrame.Position = UDim2.new(0.5, -130, 0, 230)
 dropdownFrame.BackgroundColor3 = Color3.fromRGB(30, 15, 55)
 dropdownFrame.BackgroundTransparency = 0.2
 dropdownFrame.BorderSizePixel = 0
@@ -776,7 +756,7 @@ dropdownArrow.Parent = dropdownFrame
 
 local dropdownList = Instance.new("Frame")
 dropdownList.Size = UDim2.new(0, 260, 0, 0)
-dropdownList.Position = UDim2.new(0.5, -130, 0, 358)
+dropdownList.Position = UDim2.new(0.5, -130, 0, 278)
 dropdownList.BackgroundColor3 = Color3.fromRGB(30, 15, 55)
 dropdownList.BackgroundTransparency = 0.05
 dropdownList.BorderSizePixel = 0
@@ -794,7 +774,7 @@ local optionButtons = {}
 local soundOptions = {
     {name = "No Sound", id = nil},
     {name = "Variant 1", id = "rbxassetid://101572333845544"},
-    {name = "ID: 132078503796732", id = "rbxassetid://132078503796732"},
+    {name = "Op", id = "rbxassetid://132078503796732"},
 }
 
 local currentSoundOption = 2
@@ -805,6 +785,9 @@ local function applySoundOption(index)
     dropdownText.Text = opt.name
     if opt.id then
         clickSound.SoundId = opt.id
+        soundEnabled = true
+    else
+        soundEnabled = false
     end
     clickSound.Volume = 0.5
 end
@@ -854,21 +837,18 @@ dropdownBtn.MouseButton1Click:Connect(function()
     if soundEnabled then clickSound:Play() end
 end)
 
--- CREDIT
-local creditBtn = createBtn(t("credit"), 380, settingsContainer, nil)
-
 -- ОБНОВЛЕНИЕ ЯЗЫКА
 local function updateLanguage()
     title.Text = t("title")
     langLabel.Text = t("language") .. ":"
     langEnBtn.Text = t("english")
     langRuBtn.Text = t("russian")
-    soundLabel.Text = t("sound") .. ":"
-    soundBtn.Text = soundEnabled and t("soundOn") or t("soundOff")
+    soundChoiceLabel.Text = t("clickSound") .. ":"
     speedHackBtn.Text = speedHackEnabled and t("speedOn") or t("speedHack")
     jumpBtn.Text = jumpPowerEnabled and t("jumpOn") or t("jumpPower")
     speedLabel.Text = t("speed") .. ":"
     jumpLabel.Text = t("jump") .. ":"
+    footer.Text = t("footer")
     
     tabButtons["Main"].Text = t("main")
     tabButtons["Player"].Text = t("player")
