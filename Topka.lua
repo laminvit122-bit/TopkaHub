@@ -146,9 +146,6 @@ closeBtn.Size = UDim2.new(0, 30, 0, 30)
 closeBtn.Position = UDim2.new(0.9, 0, 0, 7)
 closeBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 50)
 closeBtn.Text = ""
-closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeBtn.TextSize = 16
-closeBtn.Font = Enum.Font.GothamBold
 closeBtn.Parent = topBar
 
 local closeCorner = Instance.new("UICorner")
@@ -156,11 +153,12 @@ closeCorner.CornerRadius = UDim.new(0, 8)
 closeCorner.Parent = closeBtn
 
 local closeIcon = Instance.new("ImageLabel")
-closeIcon.Size = UDim2.new(0, 20, 0, 20)
-closeIcon.Position = UDim2.new(0.5, -10, 0.5, -10)
+closeIcon.Size = UDim2.new(0, 26, 0, 26)
+closeIcon.Position = UDim2.new(0.5, -13, 0.5, -13)
 closeIcon.BackgroundTransparency = 1
 closeIcon.Image = "rbxassetid://751603345"
 closeIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+closeIcon.ScaleType = Enum.ScaleType.Fit
 closeIcon.Parent = closeBtn
 
 closeBtn.MouseButton1Click:Connect(function() playClick() screenGui:Destroy() end)
@@ -213,7 +211,7 @@ end
 minimizeBtn.MouseButton1Click:Connect(function() playClick() minimizeGUI() end)
 expandBtn.MouseButton1Click:Connect(function() playClick() expandGUI() end)
 
--- DRAG (за всю шапку)
+-- DRAG
 local dragging = false
 local dragStart = nil
 local startPos = nil
@@ -357,7 +355,7 @@ print("Topka Hub - Часть 1 загружена! Вставьте Часть 
 -- Topka Hub
 -- ЧАСТЬ 2
 
--- MAIN (пустая заготовка)
+-- MAIN
 local mainWelcome = Instance.new("TextLabel")
 mainWelcome.Size = UDim2.new(1, 0, 0, 40)
 mainWelcome.Position = UDim2.new(0, 0, 0, 40)
@@ -751,11 +749,12 @@ dropdownText.ZIndex = 6
 dropdownText.Parent = dropdownFrame
 
 local dropdownArrow = Instance.new("ImageLabel")
-dropdownArrow.Size = UDim2.new(0, 22, 0, 22)
-dropdownArrow.Position = UDim2.new(1, -34, 0.5, -11)
+dropdownArrow.Size = UDim2.new(0, 24, 0, 24)
+dropdownArrow.Position = UDim2.new(1, -34, 0.5, -12)
 dropdownArrow.BackgroundTransparency = 1
 dropdownArrow.Image = "rbxassetid://72901043489977"
 dropdownArrow.ImageColor3 = Color3.fromRGB(255, 255, 255)
+dropdownArrow.ScaleType = Enum.ScaleType.Fit
 dropdownArrow.ZIndex = 6
 dropdownArrow.Parent = dropdownFrame
 
